@@ -1,0 +1,54 @@
+# API for SignUpView
+###
+POST http://127.0.0.1:8000/register/
+Content-Type: application/json
+
+{
+    "username" : "Hari",
+    "password" : "hari@123",
+    "email" : "hari@gmail.com"
+}
+
+#API for UserListView
+###
+GET http://127.0.0.1:8000/users/
+Accept: application/json
+
+#API for TripListCreateView
+###
+GET http://127.0.0.1:8000/trips/
+Accept: application/json
+Authorization: Basic Hari:hari@123
+
+###
+POST http://127.0.0.1:8000/trips/
+Content-Type: application/json
+Authorization: Basic Hari:hari@123
+
+{
+    "title" : "Trip Kodai",
+    "start_date" : "2026-11-15",
+    "destination" : "Kodai"
+}
+
+#API for TripRetrieveUpdateDeleteView
+###
+GET http://127.0.0.1:8000/trips/2/
+Accept: application/json
+Authorization: Basic Aljin:aljin@123
+
+###
+PUT http://127.0.0.1:8000/trips/1/
+Content-Type: application/json
+Authorization: Basic Hari:hari@123
+
+{
+    "title" : "Trip Kasol",
+    "start_date" : "2026-12-18",
+    "destination" : "Kasol"
+}
+
+###
+DELETE http://127.0.0.1:8000/trips/1/
+Authorization: Basic Hari:hari@123
+
