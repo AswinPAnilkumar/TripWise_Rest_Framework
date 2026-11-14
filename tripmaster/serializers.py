@@ -26,10 +26,10 @@ class TripMemberSerializer(serializers.ModelSerializer):
         fields = ['id','username','member_username','member_user_id','joined_at']
         read_only_fields = ['id','joined_at']
     
-    def validated_username(self,value):
+    def validate_username(self,value):
         try:
             user = User.objects.get(username=value)
-        except user.DoesNotExists:
+        except User.DoesNotExist:
             raise serializers.ValidationError("User is not an registered user")
         trip = self.context['trip']
         if user == trip.created_by:

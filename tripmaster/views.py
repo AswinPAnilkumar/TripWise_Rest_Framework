@@ -66,7 +66,7 @@ class TripRetrieveUpdateDeleteView(APIView):
             return Response({"Message":"Trip Details Updated Successfully",
                             "Updated Details":serializer_instance.data})
         else:
-            return Repsonse(data=serializer_instance.errors)
+            return Response(data=serializer_instance.errors)
 
     def delete(self,request,pk):
         trip_object = get_object_or_404(TripDb,id=pk)
