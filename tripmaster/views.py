@@ -2,10 +2,11 @@ from django.shortcuts import render,get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from tripmaster.serializers import UserSerializer,TripSerializer
-from tripmaster.models import TripDb
+from tripmaster.serializers import UserSerializer,TripSerializer,TripMemberSerializer
+from tripmaster.models import TripDb,TripMemberDb
 from rest_framework import permissions,authentication,serializers
 from tripmaster.permissions import OwnerOnly
+from rest_framework.exceptions import PermissionDenied
 
 # Create your views here.
 class SignUpView(APIView):
@@ -76,3 +77,32 @@ class TripRetrieveUpdateDeleteView(APIView):
         else:
             raise serializers.ValidationError("You don't have access to this data")
 
+class TripMemberListCreateView(APIView):
+    authentication_classes = [authentication.BasicAuthentication]
+    permission_classes = [OwnerOnly]
+
+    def get(self,request,trip_id):
+       trip_object = get_object_or_404(TripDb,id=trip_id)
+
+       #only trip owner or trip member can call this view
+       
+       is_owner = trip_object.created_by == request.user #check if the user calling is the trip owner
+       is_member = TripMemberDb.objects.filter(trip=trip_object,user=request.user).exists() #check if the user calling is a trip member
+       
+       if not (is_owner or is_member):
+        raise PermissionDenied("You cant access this trip")
+       members = TripMemberDb.objects.filter(trip=trip_object)
+       serializer_instance = TripMemberSerializer(members,many=True)
+       return Response(data=serializer_instance.data)
+    
+    def post(self,request,trip_id):
+        trip_object = get_object_or_404(TripDb,id=trip_id)
+        if trip_object.created_by != request.user:
+            raise PermissionDenied("Only trip owner can add member")
+        form_data = request.data
+        serializer_instance = TripMemberSerializer(data=form_data, context={'trip':trip_object})
+        if serializer_instance.is_valid():
+            serializer_instance.save()
+            return Response({"Message":"Member Successfully Added"})
+        else:
+            return Response(data=serializer_instance.errors)

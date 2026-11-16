@@ -4,9 +4,9 @@ POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
 {
-    "username" : "Hari",
-    "password" : "hari@123",
-    "email" : "hari@gmail.com"
+    "username" : "Manu",
+    "password" : "manu@123",
+    "email" : "manu@gmail.com"
 }
 
 #API for UserListView
@@ -52,3 +52,17 @@ Authorization: Basic Hari:hari@123
 DELETE http://127.0.0.1:8000/trips/1/
 Authorization: Basic Hari:hari@123
 
+#API for TripMemberListCreateView
+###
+GET http://127.0.0.1:8000/trip/2/members/
+Accept: application/json
+Authorization: Basic Hari:hari@123
+
+###
+POST http://127.0.0.1:8000/trip/2/members/
+Content-Type: application/json
+Authorization: Basic Hari:hari@123
+
+{
+    "username" : "Manu"
+}
