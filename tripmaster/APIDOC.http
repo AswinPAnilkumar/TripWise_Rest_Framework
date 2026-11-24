@@ -66,3 +66,8 @@ Authorization: Basic Hari:hari@123
 {
     "username" : "Manu"
 }
+
+#API for MemberDeleteView
+###
+DELETE http://127.0.0.1:8000/trip/2/members/2/
+Authorization: Basic Hari:hari@123

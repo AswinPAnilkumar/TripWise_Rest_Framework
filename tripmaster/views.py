@@ -106,3 +106,16 @@ class TripMemberListCreateView(APIView):
             return Response({"Message":"Member Successfully Added"})
         else:
             return Response(data=serializer_instance.errors)
+    
+class MemberDeleteView(APIView):
+    authentication_classes = [authentication.BasicAuthentication]
+    permission_classes = [OwnerOnly]
+
+    def delete(self,request,trip_id,member_id):
+        trip_object = get_object_or_404(TripDb,id=trip_id)
+        if trip_object.created_by != request.user:
+            raise PermissionDenied('Only trip owner can remove members')
+        member_object = get_object_or_404(TripMemberDb,id=member_id,trip=trip_object)
+        member_object.delete()
+        return Response({'Message':'Member removed successfully'})
+    

@@ -5,7 +5,7 @@ from tripmaster.models import TripDb,TripMemberDb
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username","email","password"]
+        fields = ["id","username","email","password"]
     
     def create(self,validated_data):
         return User.objects.create_user(**validated_data)
@@ -23,7 +23,7 @@ class TripMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TripMemberDb
-        fields = ['id','username','member_username','member_user_id','joined_at']
+        fields = ['id','username','member_username','member_user_id','trip','joined_at']
         read_only_fields = ['id','joined_at']
     
     def validate_username(self,value):
